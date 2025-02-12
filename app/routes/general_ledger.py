@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_file
 from flask_cors import CORS
 from app.db import get_db_connection
+import io
+import xlsxwriter
 
 gl_bp = Blueprint("gl", __name__)
 CORS(gl_bp, resources={
@@ -75,15 +77,41 @@ def gl():
             'coa_code_end': coa_code_end
         })
 
+        cursor.execute(query)
         columns = [desc[0] for desc in cursor.description]
-        rows = cursor.fetchall()
 
-        result = [{columns[i]: row[i] for i in range(len(columns))} for row in rows]
+        # Create an in-memory Excel file
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet()
+
+        # Create date format (dd-mmm-yyyy)
+        date_format = workbook.add_format({'num_format': 'dd-mmm-yyyy'})
+
+        # Add headers
+        for col, header in enumerate(columns):
+            worksheet.write(0, col, header)
+
+        # Write data
+        for row, data in enumerate(cursor, start=1):
+            for col, value in enumerate(data):
+                if columns[col].upper() == 'TRANS_DATE':  # Apply date format
+                    worksheet.write(row, col, value, date_format)
+                else:
+                    worksheet.write(row, col, value)
+
+        workbook.close()
+        output.seek(0)
 
         cursor.close()
         connection.close()
 
-        return jsonify(result)
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=f'general_ledger_{start_date}_to_{end_date}.xlsx',
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

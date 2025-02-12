@@ -15,6 +15,9 @@ CORS(user_bp, resources={
 def get_user_count():
     # Handle CORS preflight request
     if request.method == "OPTIONS":
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
         response = jsonify({"message": "CORS preflight request successful"})
         response.headers.add('Access-Control-Allow-Origin', '*')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')

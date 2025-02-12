@@ -8,6 +8,7 @@ from app.routes.trail_balance import tb_bp
 from app.routes.general_ledger import gl_bp  # Import the gl blueprint
 from app.routes.user import user_bp  # Import the gl blueprint
 from app.routes.coa_codes import codes_bp  # Import the gl blueprint
+from app.routes.debtor_aging_zero import daz_bp
 
 def create_app():
     app = Flask(__name__)
@@ -31,5 +32,5 @@ def create_app():
     app.register_blueprint(tb_bp)
     app.register_blueprint(codes_bp)
     app.register_blueprint(gl_bp)  # Register the gl blueprint
-    
+    app.register_blueprint(daz_bp)
     return app
