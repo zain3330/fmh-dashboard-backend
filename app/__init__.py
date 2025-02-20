@@ -15,7 +15,12 @@ from app.routes.consumption_analysis import ca_bp
 from app.routes.client_receipts import cr_bp
 from app.routes.client_unadjusted_receipts import cur_bp
 from app.routes.credit_card_receipts import ccr_bp
-
+from app.routes.ipd_revenue import ir_bp
+from app.routes.other_donation import od_bp
+from app.routes.ear_revenue import er_bp
+from app.routes.opd_revenue import or_bp
+from app.routes.corporate_billing import cb_bp
+from app.routes.monthly_stock_report import msr_bp
 def create_app():
     app = Flask(__name__)
     
@@ -45,4 +50,10 @@ def create_app():
     app.register_blueprint(cr_bp)
     app.register_blueprint(cur_bp)
     app.register_blueprint(ccr_bp)
+    app.register_blueprint(ir_bp)
+    app.register_blueprint(od_bp)
+    app.register_blueprint(er_bp)
+    app.register_blueprint(or_bp)
+    app.register_blueprint(cb_bp)
+    app.register_blueprint(msr_bp)
     return app
