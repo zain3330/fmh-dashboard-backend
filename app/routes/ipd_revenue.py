@@ -26,13 +26,11 @@ def ir():
         query = ''' 
         WITH combined_data AS (
             SELECT im.admission_no, imbd.serial_no, NULL Return_no,
-                   im.mrno, p.name Pat_Name, im.invoice_date trns_date, im.invoice_no, imbd.contract_id,
-                   imbd.item_id, Pharmacy.pkg_common.GET_GENERIC_BRAND_DETAIL(imbd.item_id) Drug,
-                   imbd.qty,imbd.amount, imbd.client_id client_id, opa.admission_final_time, opa.discharge_date,
-                   cl.name CL_Name, ol.description order_location, doc.NAME Adm_Doctor, doc.DEPARTMENT as Adm_Department, 
-                   pt.description Patient_Type,
-                   opa.order_admission_type admission_type,  ins.income_description in_Setup, 
-                   imbd.department_id, gsl.sub_ldgr_item_desc sub_ldgr_desc
+       im.mrno, p.name Pat_Name, im.invoice_date trns_date, im.invoice_no, imbd.contract_id,
+       imbd.item_id, Pharmacy.pkg_common.GET_GENERIC_BRAND_DETAIL(imbd.item_id) Drug,
+       imbd.qty,imbd.amount, IMBD.CONTRACT_ID, imbd.client_id client_id, opa.admission_final_time, opa.discharge_date,
+       cl.name CL_Name, ol.description order_location, doc.NAME Adm_Doctor, doc.DEPARTMENT Adm_Department, pt.description Patient_Type,
+       opa.order_admission_type admission_type,  ins.income_description in_Setup, imbd.department_id, gsl.sub_ldgr_item_desc sub_ldgr_desc
               FROM BILLING.INVOICE_MASTER    IM,
                    BILLING.INVOICE_MASTER_BILL_DIST IMBD,
                    registration.v_patient p,
@@ -72,14 +70,11 @@ def ir():
                and fim.final_invoice_date < TO_DATE(:end_date, 'YYYY-MM-DD'))
             UNION ALL
             SELECT rm.admission_no, rmbd.serial_no, rmbd.return_no,
-                   rm.mrno, p.name Pat_Name, rm.return_date trns_date, rm.invoice_no, rmbd.contract_id,
-                   rmbd.item_id, Pharmacy.pkg_common.GET_GENERIC_BRAND_DETAIL(rmbd.item_id) Drug, 
-                   -1*rmbd.qty, -1*rmbd.amount,
-                   rmbd.contract_id, opa.admission_final_time, opa.discharge_date, cl.name CL_Name,
-                   ol.description order_location, doc.NAME Adm_Doctor, doc.DEPARTMENT as Adm_Department, 
-                   pt.description Patient_Type,
-                   opa.order_admission_type admission_type, ins.income_description in_Setup, 
-                   rmbd.department_id, gsl.sub_ldgr_item_desc sub_ldgr_desc
+       rm.mrno, p.name Pat_Name, rm.return_date trns_date, rm.invoice_no, rmbd.contract_id,
+       rmbd.item_id, Pharmacy.pkg_common.GET_GENERIC_BRAND_DETAIL(rmbd.item_id) Drug,
+       -1*rmbd.qty, -1*rmbd.amount, rmbd.contract_id, Rmbd.client_id client_id, opa.admission_final_time, opa.discharge_date,
+       cl.name CL_Name, ol.description order_location, doc.NAME Adm_Doctor, doc.DEPARTMENT Adm_Department, pt.description Patient_Type,
+       opa.order_admission_type admission_type, ins.income_description in_Setup, rmbd.department_id, gsl.sub_ldgr_item_desc sub_ldgr_desc
               FROM BILLING.RETURN_MASTER    RM,
                    BILLING.RETURN_MASTER_BILL_DIST RMBD,
                    registration.v_patient p,

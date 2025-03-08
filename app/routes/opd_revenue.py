@@ -30,9 +30,8 @@ FROM
 (
 SELECT im.admission_no, imbd.serial_no, NULL Return_no,
        im.mrno, p.name Pat_Name, im.invoice_date trns_date, im.invoice_no,
-       imbd.item_id, Pharmacy.pkg_common.GET_GENERIC_BRAND_DETAIL(imbd.item_id) Drug,
-       imbd.qty,imbd.amount, pt.description Patient_Type, cl.name CL_Name, gsl.sub_ldgr_item_desc sub_ldgr_desc,
-       doc.NAME Doctor, doc.DEPARTMENT Department,
+       imbd.item_id, Pharmacy.pkg_common.GET_GENERIC_BRAND_DETAIL(imbd.item_id) Drug, imbd.qty, imbd.amount,
+       doc.NAME Doctor, doc.DEPARTMENT Department, pt.description Patient_Type, cl.name CL_Name, gsl.sub_ldgr_item_desc sub_ldgr_desc,
        ins.income_description in_Setup
   FROM BILLING.INVOICE_MASTER    IM,
        BILLING.INVOICE_MASTER_BILL_DIST IMBD,

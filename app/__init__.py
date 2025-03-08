@@ -21,17 +21,16 @@ from app.routes.ear_revenue import er_bp
 from app.routes.opd_revenue import or_bp
 from app.routes.corporate_billing import cb_bp
 from app.routes.monthly_stock_report import msr_bp
+from app.routes.dashboard import dashboard_bp
+from app.routes.provident_fund_general_ledger import pfgl_bp
+from app.routes.provident_fund_trial_balance import pftb_bp
+from app.routes.pharmacy_consumption import pc_bp
+from app.routes.dashboard_revenue import revenue_bp
 def create_app():
     app = Flask(__name__)
     
     # Configure CORS with specific options
-    CORS(app, resources={
-        r"/*": {
-            "origins": "*",
-            "methods": ["GET", "POST", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"]
-        }
-    })
+    CORS(app)
 
     oracledb.init_oracle_client()
 
@@ -56,4 +55,9 @@ def create_app():
     app.register_blueprint(or_bp)
     app.register_blueprint(cb_bp)
     app.register_blueprint(msr_bp)
+    app.register_blueprint(dashboard_bp)
+    app.register_blueprint(pfgl_bp)
+    app.register_blueprint(pftb_bp)
+    app.register_blueprint(pc_bp)
+    app.register_blueprint(revenue_bp)
     return app
