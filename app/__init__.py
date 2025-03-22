@@ -26,6 +26,9 @@ from app.routes.provident_fund_general_ledger import pfgl_bp
 from app.routes.provident_fund_trial_balance import pftb_bp
 from app.routes.pharmacy_consumption import pc_bp
 from app.routes.dashboard_revenue import revenue_bp
+from app.routes.donations_receipts_no import drn_bp
+from app.routes.donations_receipts import don_bp
+from app.routes.donations_report import dr_bp
 def create_app():
     app = Flask(__name__)
     
@@ -60,4 +63,7 @@ def create_app():
     app.register_blueprint(pftb_bp)
     app.register_blueprint(pc_bp)
     app.register_blueprint(revenue_bp)
+    app.register_blueprint(drn_bp)
+    app.register_blueprint(don_bp)
+    app.register_blueprint(dr_bp)
     return app
